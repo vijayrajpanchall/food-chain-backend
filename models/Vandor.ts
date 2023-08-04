@@ -26,7 +26,7 @@ const VandorSchema: Schema = new Schema({
     email: { type: String, required: true },
     password: { type: String, required: true },
     salt: { type: String, required: true },
-    serviceAvailable: { type: String, required: true },
+    serviceAvailable: { type: Boolean, required: true },
     coverImages: { type: [String], required: true },
     rating: { type: Number, required: true },
     // foods: { type: Schema.Types.ObjectId, ref: 'Food' }
