@@ -30,7 +30,20 @@ const VandorSchema: Schema = new Schema({
     coverImages: { type: [String], required: true },
     rating: { type: Number, required: true },
     // foods: { type: Schema.Types.ObjectId, ref: 'Food' }
-});
+},
+    {
+        toJSON: {
+            transform(doc, ret) {
+                delete ret.password;
+                delete ret.salt;
+                delete ret.__v;
+                delete ret.createdAt;
+                delete ret.updatedAt;
+            },
+        },
+        timestamps: true,
+    }
+);
 
 const Vandor = mongoose.model<VandorDoc>("Vandor", VandorSchema);
 
