@@ -29,18 +29,18 @@ export const CreateVandor = async (req: Request, res: Response, next: NextFuncti
 
     const createVandor = await Vandor.create({
         name: name,
-        ownerName: ownerName,
-        foodType: foodType,
-        pincode: pincode,
         address: address,
-        phone: phone,
+        pincode: pincode,
+        foodType: foodType,
         email: email,
         password: hashedPassword,
-        rating: 0,
         salt: salt,
+        ownerName: ownerName,
+        phone: phone,
+        rating: 0,
         serviceAvailable: false,
-        coverImages: []
-
+        coverImages: [],
+        foods: []
     });
     
     return res.json(createVandor);

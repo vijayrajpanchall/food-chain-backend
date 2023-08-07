@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { EditVandorInput, VandorLoginInput } from "../dto/Vandor.dto";
 import { FindVandor } from "./AdminController";
 import { GenerateSignature, ValidatePassword } from "../utility";
+import { Food } from '../models';
 
 export const VandorLogin = async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = <VandorLoginInput>req.body;
@@ -71,4 +72,44 @@ export const UpdateVandorService = async (req: Request, res: Response, next: Nex
 
     return res.json({ "message": "vandor info not found" });
 
+};
+
+export const addFood = async (req: Request, res: Response, next: NextFunction) => {
+    const user = req.user;
+
+    if (user) {
+        const { name, description, category, foodType, readyTime, price } = req.body;
+        const vendor = await FindVandor(user._id);
+        console.log("vendor: ",vendor);
+        if (vendor !== null && vendor !== undefined) {
+            const food = await Food.create({
+                vandorId: vendor._id,
+                name: name,
+                description: description,
+                category: category,
+                foodType: foodType,
+                readyTime: readyTime,
+                price: price,
+                image: "mock.jpg",
+                rating: 0,
+                food: []
+            });            
+            vendor.foods.push(food);
+            const savedResult = await vendor.save();
+            return res.json(savedResult);
+        }
+    }
+
+    return res.json({ "message": "vandor info not found" });
+
+};
+
+export const getFoods = async (req: Request, res: Response, next: NextFunction) => {
+    const user = req.user;
+
+    if (user) {
+        
+    }
+
+    return res.json({ "message": "vandor info not found" });
 };
