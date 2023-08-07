@@ -1,8 +1,22 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { GetVandorProfile, UpdateVandorProfile, UpdateVandorService, VandorLogin, addFood, getFoods } from '../controllers';
 import { Authenticate } from '../middlewares';
+// import multer
+import multer from 'multer';
 
 const router = express.Router();
+
+const imageStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'images');
+    },
+    filename: (req, file, cb) => {
+        console.log(file);
+        cb(null, new Date().toISOString() + '-' + file.originalname);
+    }
+});
+
+const images = multer({ storage: imageStorage }).array('images', 10);
 
 router.post('/login', VandorLogin);
 
@@ -11,7 +25,7 @@ router.get('/profile',Authenticate, GetVandorProfile);
 router.patch('/profile', UpdateVandorProfile);
 router.patch('/service', UpdateVandorService);
 
-router.post('/food', addFood);
+router.post('/food', images,  addFood);
 router.get('/foods', getFoods);
 
 router.get('/', (req: Request, res: Response, next: NextFunction) => {

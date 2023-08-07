@@ -82,6 +82,10 @@ export const addFood = async (req: Request, res: Response, next: NextFunction) =
         const vendor = await FindVandor(user._id);
         console.log("vendor: ",vendor);
         if (vendor !== null && vendor !== undefined) {
+
+           const files = req.files as [Express.Multer.File]
+           const images = files.map((file: Express.Multer.File) => file.filename);
+
             const food = await Food.create({
                 vandorId: vendor._id,
                 name: name,
@@ -90,7 +94,7 @@ export const addFood = async (req: Request, res: Response, next: NextFunction) =
                 foodType: foodType,
                 readyTime: readyTime,
                 price: price,
-                image: "mock.jpg",
+                image: images,
                 rating: 0,
                 food: []
             });            
