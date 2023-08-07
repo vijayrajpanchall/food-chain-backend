@@ -1,7 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
-import { GetVandorProfile, UpdateVandorProfile, UpdateVandorService, VandorLogin, addFood, getFoods } from '../controllers';
+import { GetVandorProfile, UpdateVandorCoverImage, UpdateVandorProfile, UpdateVandorService, VandorLogin, addFood, getFoods } from '../controllers';
 import { Authenticate } from '../middlewares';
-// import multer
 import multer from 'multer';
 
 const router = express.Router();
@@ -24,6 +23,7 @@ router.use(Authenticate);
 router.get('/profile',Authenticate, GetVandorProfile);
 router.patch('/profile', UpdateVandorProfile);
 router.patch('/service', UpdateVandorService);
+router.patch('/coverimage', images, UpdateVandorCoverImage);
 
 router.post('/food', images,  addFood);
 router.get('/foods', getFoods);

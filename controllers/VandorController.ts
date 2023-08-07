@@ -57,6 +57,22 @@ export const UpdateVandorProfile = async (req: Request, res: Response, next: Nex
 
 };
 
+export const UpdateVandorCoverImage = async (req: Request, res: Response, next: NextFunction) => {
+    
+    const user = req.user;
+
+    if (user) {
+        const existingVendor = await FindVandor(user._id);
+        if (existingVendor !== null && existingVendor !== undefined) {
+            const files = req.files as [Express.Multer.File];
+            const images = files.map((file: Express.Multer.File) => file.filename);
+            existingVendor.coverImages.push(...images);
+            const savedResult = await existingVendor.save();
+            return res.json(savedResult);
+        }
+    }
+    return res.json({ "message": "Something went wrong" });
+};
 export const UpdateVandorService = async (req: Request, res: Response, next: NextFunction) => {
     const user = req.user;
 
